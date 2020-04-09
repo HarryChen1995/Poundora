@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-class Pages_State extends State<Pages>{
+class Home_State extends State<Home_Page>{
   List _pages = [ Text("home"), Text("Body Profile"), Text("Calories Log"), Text("Weight Chart")];
   int _current_index = 0;
   @override
@@ -48,7 +48,7 @@ class Pages_State extends State<Pages>{
   }
 
 }
-class Pages extends StatefulWidget{
+class Home_Page extends StatefulWidget{
   @override 
-  Pages_State  createState() => Pages_State();
+  Home_State createState() => Home_State();
 }
