@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
+
 class LogIn_State extends State<LogIn_Page> {
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -17,48 +18,55 @@ class LogIn_State extends State<LogIn_Page> {
       width: 0.0,
     );
   }
-showErrorMessage(BuildContext context, String err) {
-  Widget ok = FlatButton(
-    child: Text("OK",style: TextStyle( color: Theme.of(context).primaryColor)),
-    onPressed: () {
-      Navigator.pop(context);},
-  );
-  AlertDialog alert = AlertDialog(
-    title: Text("Log In Failed", style: TextStyle( color:Colors.red)),
-    content: Text(err, style: TextStyle( color:Colors.red)),
-    actions: [
-      ok,
-    ],
-  );
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
+
+  showErrorMessage(BuildContext context, String err) {
+    Widget ok = FlatButton(
+      child:
+          Text("OK", style: TextStyle(color: Theme.of(context).primaryColor)),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Log In Failed", style: TextStyle(color: Colors.red)),
+      content: Text(err, style: TextStyle(color: Colors.red)),
+      actions: [
+        ok,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   void initState() {
     _isloading = false;
     super.initState();
   }
-  Future<String> sign_in(String email, String password) async{
-    AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+  Future<String> sign_in(String email, String password) async {
+    AuthResult result = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
     return result.user.uid;
   }
+
   void login() async {
     if (_loginKey.currentState.validate()) {
       setState(() {
         _isloading = true;
       });
       try {
-          String uid = await sign_in(_email.text, _password.text);
-          _email.clear();
-          _password.clear();
-          setState(() {
-            _isloading = false;
-          });
-          Navigator.pushReplacementNamed(context, "/home");
+        String uid = await sign_in(_email.text, _password.text);
+        _email.clear();
+        _password.clear();
+        setState(() {
+          _isloading = false;
+        });
+        Navigator.pushReplacementNamed(context, "/home");
       } catch (e) {
         setState(() {
           _isloading = false;
@@ -78,7 +86,9 @@ showErrorMessage(BuildContext context, String err) {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text("Log In", style: TextStyle(fontSize: 35)),
+                  CircleAvatar(
+                      radius: 60,
+                      backgroundImage: AssetImage("assets/icon/icon.jpg")),
                   Container(
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: TextFormField(
