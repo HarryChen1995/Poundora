@@ -87,8 +87,8 @@ class LogIn_State extends State<LogIn_Page> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   CircleAvatar(
-                      radius: 60,
-                      backgroundImage: AssetImage("assets/icon/icon.jpg")),
+                      radius: 70,
+                      backgroundImage: AssetImage("assets/icon/logo.jpg")),
                   Container(
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: TextFormField(
