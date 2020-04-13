@@ -8,10 +8,20 @@ class Home_State extends State<Home_Page>{
       appBar: AppBar(
         title: const Text(
           "Poundora", 
-          style: TextStyle(fontSize: 30.0, 
+          style: TextStyle(fontSize: 25.0, 
           fontWeight: FontWeight.bold, 
+          fontStyle: FontStyle.italic,
           color:Colors.white
-          ))
+          )),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              color: Colors.white,
+              tooltip: "Sign Out",
+              onPressed: (){
+              },
+            )
+          ],
         ),
       body: Center(
           child: _pages[_current_index]
