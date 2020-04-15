@@ -7,11 +7,12 @@ class LogIn_State extends State<LogIn_Page> {
   final _loginKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
   bool _isloading;
-  Widget isLoading() {
+  Widget isLoading(BuildContext context) {
     if (_isloading) {
       return Center(
-        child: CircularProgressIndicator(),
-      );
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)
+      ));
     }
     return Container(
       height: 0.0,
@@ -42,16 +43,33 @@ class LogIn_State extends State<LogIn_Page> {
     );
   }
 
-  @override
-  void initState() {
-    _isloading = false;
-    super.initState();
+  showRequireVerifyEmail(BuildContext context) {
+    Widget ok = FlatButton(
+      child:
+          Text("OK", style: TextStyle(color: Theme.of(context).primaryColor)),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Log In Failed", style: TextStyle(color: Colors.red)),
+      content: Text("Your account is not verified! The verfication link had sent to your email. please verify your account, then come back and retry", style: TextStyle(color: Colors.red)),
+      actions: [
+        ok,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
-  Future<String> sign_in(String email, String password) async {
+  Future<AuthResult> sign_in(String email, String password) async {
     AuthResult result = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
-    return result.user.uid;
+    return result;
   }
 
   void login() async {
@@ -60,13 +78,16 @@ class LogIn_State extends State<LogIn_Page> {
         _isloading = true;
       });
       try {
-        String uid = await sign_in(_email.text, _password.text);
+        AuthResult result = await sign_in(_email.text, _password.text);
+        setState(() {_isloading = false;});
+        if(result.user.isEmailVerified){
         _email.clear();
         _password.clear();
-        setState(() {
-          _isloading = false;
-        });
         Navigator.pushReplacementNamed(context, "/home");
+        }
+        else{
+          showRequireVerifyEmail(context);
+        }
       } catch (e) {
         setState(() {
           _isloading = false;
@@ -75,6 +96,12 @@ class LogIn_State extends State<LogIn_Page> {
         showErrorMessage(context, e.message);
       }
     }
+  }
+
+  @override
+  void initState() {
+    _isloading = false;
+    super.initState();
   }
 
   @override
@@ -118,7 +145,7 @@ class LogIn_State extends State<LogIn_Page> {
                           return null;
                         },
                       )),
-                  isLoading(),
+                  isLoading(context),
                   RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
