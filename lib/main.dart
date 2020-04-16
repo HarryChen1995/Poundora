@@ -16,8 +16,9 @@ class Poundora_App extends StatelessWidget {
           primaryColor: Colors.purple,
           textTheme: TextTheme(
               body1: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
-      home: Initial_Page(),
+      initialRoute: "/initial",
       routes: {
+        "/initial": (BuildContext context) => Initial_Page(),
         "/login": (BuildContext context) => LogIn_Page(),
         "/signup": (BuildContext context) => Sign_Up_Page(),
         "/home": (BuildContext context) => Home_Page()
