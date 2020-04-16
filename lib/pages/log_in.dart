@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:firebase_auth/firebase_auth.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 class LogIn_State extends State<LogIn_Page> {
   final _email = TextEditingController();
@@ -10,9 +11,9 @@ class LogIn_State extends State<LogIn_Page> {
   Widget isLoading(BuildContext context) {
     if (_isloading) {
       return Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)
-      ));
+          child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).primaryColor)));
     }
     return Container(
       height: 0.0,
@@ -53,7 +54,9 @@ class LogIn_State extends State<LogIn_Page> {
     );
     AlertDialog alert = AlertDialog(
       title: Text("Log In Failed", style: TextStyle(color: Colors.red)),
-      content: Text("Your account is not verified! The verfication link had sent to your email. please verify your account, then come back and retry", style: TextStyle(color: Colors.red)),
+      content: Text(
+          "Your account is not verified! The verfication link had sent to your email. please verify your account, then come back and retry",
+          style: TextStyle(color: Colors.red)),
       actions: [
         ok,
       ],
@@ -79,13 +82,16 @@ class LogIn_State extends State<LogIn_Page> {
       });
       try {
         AuthResult result = await sign_in(_email.text, _password.text);
-        setState(() {_isloading = false;});
-        if(result.user.isEmailVerified){
-        _email.clear();
-        _password.clear();
-        Navigator.pushReplacementNamed(context, "/home");
-        }
-        else{
+        setState(() {
+          _isloading = false;
+        });
+        if (result.user.isEmailVerified) {
+          _email.clear();
+          _password.clear();
+          final SharedPreferences pref = await SharedPreferences.getInstance();
+          pref.setString("User_Id", result.user.uid);
+          Navigator.pushReplacementNamed(context, "/home");
+        } else {
           showRequireVerifyEmail(context);
         }
       } catch (e) {

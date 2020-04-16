@@ -57,7 +57,7 @@ class Sign_Up_State extends State<Sign_Up_Page> {
     );
   }
 
- showVerifyEmail(BuildContext context) {
+  showVerifyEmail(BuildContext context) {
     Widget ok = FlatButton(
       child:
           Text("OK", style: TextStyle(color: Theme.of(context).primaryColor)),
@@ -228,14 +228,18 @@ class Sign_Up_State extends State<Sign_Up_Page> {
                             _isloading = true;
                           });
                           try {
-                            AuthResult result = await SignUp(_email.text, _confirmed_password.text);
+                            AuthResult result = await SignUp(
+                                _email.text, _confirmed_password.text);
                             await result.user.sendEmailVerification();
                             setState(() {
                               _isloading = false;
                             });
                             showVerifyEmail(context);
-                            await _db.child("Users").child(result.user.uid).set({
-                               "firstname": _first_name.text,
+                            await _db
+                                .child("Users")
+                                .child(result.user.uid)
+                                .set({
+                              "firstname": _first_name.text,
                               "lastname": _last_name.text,
                               "email": _email.text
                             });
