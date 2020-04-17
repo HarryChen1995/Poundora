@@ -106,7 +106,7 @@ class Sign_Up_State extends State<Sign_Up_Page> {
   }
 
   bool checkPassword(String value) {
-    return value.length < 6;
+    return value.length <= 6;
   }
 
   @override
