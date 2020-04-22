@@ -341,7 +341,7 @@ class Sign_Up_State extends State<Sign_Up_Page> {
                             showVerifyEmail(context);
                             await _db
                                 .child("Users")
-                                .child(result.user.uid)
+                                .push()
                                 .set({
                               "first_name": _first_name.text,
                               "last_name": _last_name.text,
@@ -349,7 +349,8 @@ class Sign_Up_State extends State<Sign_Up_Page> {
                               "gender": _gender,
                               "current_weight": int.parse(_current_weight.text),
                               "weight_goal": int.parse(_weight_goal.text),
-                              "height": double.parse(_height.text)
+                              "height": double.parse(_height.text),
+                              "user_id": result.user.uid
                             });
                             _first_name.clear();
                             _last_name.clear();
