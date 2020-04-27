@@ -369,18 +369,8 @@ class Sign_Up_State extends State<Sign_Up_Page> {
                           }
                         }
                       },
-                      child: Text("Sign Up",
-                          style: TextStyle(color: Colors.white)))),
-              SizedBox(height: 20),
-              Container(
-                  padding: EdgeInsets.fromLTRB(150, 0, 150, 0),
-                  child: FlatButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("Go Back",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor))))
+                      child: Text("Submit",
+                          style: TextStyle(color: Colors.white))))
             ])));
   }
 }
